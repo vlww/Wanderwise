@@ -1,12 +1,18 @@
 import { useState } from "react";
+
+/* navigation bar (on everything except login screen) */
 import NavBar             from "./components/NavBar";
+
+/* all 6 pages from wireframes */
 import LoginPage          from "./pages/LoginPage";
 import HomePage           from "./pages/HomePage";
 import DestinationFinder  from "./pages/DestinationFinder";
 import WishlistPage       from "./pages/WishlistPage";
 import BudgetTracker      from "./pages/BudgetTracker";
 import SettingsPage       from "./pages/SettingsPage";
-import { INITIAL_WISHLIST, INITIAL_SAVINGS } from "./data/initialData";
+
+/* access wishlist dataset */
+import { INITIAL_WISHLIST, INITIAL_SAVINGS } from "./data/Data";
 import "./styles/global.css";
 
 export default function App() {

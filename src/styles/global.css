@@ -5,7 +5,7 @@ body {
   min-height: 100vh;
 }
 
-/*background stuff*/
+/* background stuff */
 .app-bg {
   position: fixed; inset: 0; z-index: 0;
   background:
