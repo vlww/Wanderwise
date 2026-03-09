@@ -29,7 +29,24 @@ export default function LoginPage({ onLogin }) {
                     />
                   </div>
                 </div>
-
+        
+        {/* password box */}
+                <div className="field-grp">
+                  <label>Password</label>
+                  <div className="field-wrap">
+                    <div className="field-icon"><LockIcon /></div>
+                    <input
+                      type={showPass ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handle()}
+                      autoComplete="current-password"
+                    />
+                    <button className="field-icon-r" onClick={() => setShowPass((p) => !p)}>
+                      {showPass ? <EyeOffIcon /> : <EyeIcon />}
+                    </button>
+                  </div>
+                </div>
 
 
 
