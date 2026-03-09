@@ -37,6 +37,7 @@ export default function LoginPage({ onLogin }) {
                     <div className="field-icon"><LockIcon /></div>
                     <input
                       type={showPass ? "text" : "password"}
+                      placeholder="•••••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handle()}
