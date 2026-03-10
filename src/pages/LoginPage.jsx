@@ -3,6 +3,22 @@ import { GlobeIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon, AlertIcon } from ".
 import "../styles/login.css";
 
 export default function LoginPage({ onLogin }) {
+    const handle = async () => {
+        setError("");
+        if (!email || !password) {
+          setError("Please enter your email and password.");
+          return;
+        }
+        if (!/\S+@\S+\.\S+/.test(email)) {
+          setError("Please enter a valid email address.");
+          return;
+        }
+        setLoading(true);
+        await new Promise((r) => setTimeout(r, 1100));
+        setLoading(false);
+
+      };
+    
     return (
         <div className="login-wrap">
           <div className="login-card">
