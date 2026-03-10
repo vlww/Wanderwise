@@ -108,3 +108,12 @@ body {
 .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(44,95,138,.38); filter: brightness(1.05); }
 .btn-primary:active:not(:disabled) { transform: translateY(0); }
 .btn-primary:disabled { opacity: .7; cursor: not-allowed; }
+
+.link-btn {
+  background: none; border: none; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; font-size: .8rem; color: var(--ocean-light);
+  font-weight: 500; padding: 0; transition: color .2s;
+}
+.link-btn:hover { color: var(--ocean); }
+.link-btn.coral { color: var(--coral); font-size: .87rem; margin-left: 4px; }
+.link-btn.coral:hover { color: var(--coral-light); }
