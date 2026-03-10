@@ -68,6 +68,11 @@ export default function LoginPage({ onLogin }) {
           {loading ? "Logging in…" : "Log In"}
         </button>
 
+        <div className="divider-row">or</div>
+
+        <div className="create-row">
+          <button className="link-btn coral">Create an account</button>
+        </div>
 
 
         </div>
