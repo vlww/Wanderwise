@@ -57,3 +57,34 @@ body {
   padding-bottom: 40px;
   min-height: 100vh;
 }
+
+/* card */
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 22px;
+  box-shadow: 0 2px 6px rgba(44,95,138,.05), 0 12px 40px rgba(44,95,138,.10);
+  overflow: hidden;
+  animation: fadeUp .55s both;
+}
+
+.card:nth-child(2) { animation-delay: .1s; }
+
+.card-header {
+  background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-header h2 {
+  font-size: .88rem; font-weight: 600;
+  color: #fff; letter-spacing: .04em; text-transform: uppercase;
+}
+.card-header svg {
+  width: 16px; height: 16px; stroke: #fff; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .8;
+}
+
+.card-body { padding: 24px 22px; }
