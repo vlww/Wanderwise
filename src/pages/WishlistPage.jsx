@@ -209,10 +209,6 @@ export default function WishlistPage({ wishlist, setWishlist }) {
 
       <div className="wl-wrap">
 
-
-
-
-
         {/* filter bar */}
         <div className="wl-filter-bar">
           <div className="wl-filter-left">
