@@ -29,3 +29,28 @@ export const INITIAL_WISHLIST = [
 ];
 
 export const INITIAL_SAVINGS = 1200;
+
+export const BUDGET_OPTIONS = [
+  { label:"Any Budget",      min:0,    max:Infinity },
+  { label:"Under $500",      min:0,    max:500 },
+  { label:"$500 – $1,000",   min:500,  max:1000 },
+  { label:"$1,000 – $1,500", min:1000, max:1500 },
+  { label:"$1,500 – $2,000", min:1500, max:2000 },
+  { label:"Over $2,000",     min:2000, max:Infinity },
+];
+
+export const DURATION_OPTIONS = [
+  { label:"Any Duration",         value:"any" },
+  { label:"Weekend (1–3 days)",   value:"weekend" },
+  { label:"1 Week (4–7 days)",    value:"week" },
+  { label:"2 Weeks (8–14 days)",  value:"twoweeks" },
+  { label:"1 Month (15+ days)",   value:"month" },
+];
+
+export const INTEREST_OPTIONS = [
+  "Adventure","Beach","City","Culture",
+  "Food","History","Music","Nature",
+  "Nightlife","Outdoors",
+];
+
+export const PER_PAGE = 5;
