@@ -1,0 +1,35 @@
+.df-wrap {
+  max-width: 900px; margin: 0 auto; padding: 0 24px;
+}
+
+/* filter bar */
+.df-filters {
+  display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.df-search-wrap {
+  flex: 1; min-width: 200px;
+  position: relative; display: flex; align-items: center;
+}
+
+.df-search-wrap svg {
+  position: absolute; left: 14px;
+  width: 17px; height: 17px; stroke: var(--text-light); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.df-search {
+  width: 100%; padding: 11px 14px 11px 42px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: .9rem;
+  color: var(--text-dark); background: rgba(255,255,255,.85);
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+
+.df-search::placeholder { color: var(--text-light); }
+.df-search:focus {
+  border-color: var(--ocean-light); background: #fff;
+  box-shadow: 0 0 0 3px rgba(44,95,138,.08);
+}
