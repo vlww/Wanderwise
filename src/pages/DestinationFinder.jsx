@@ -91,22 +91,19 @@ export default function DestinationFinder({ wishlist, setWishlist }) {
   const [interests,    setInterests]    = useState([]);
   const [results,      setResults]      = useState(null); 
   const [page,         setPage]         = useState(1);
+  const [openTagsId,   setOpenTagsId]   = useState(null);
 
   const wishlistIds = new Set(wishlist.map(w => w.name + "|" + w.country));
 
   const runSearch = () => {
-    const budgetOpt   = BUDGET_OPTIONS.find(b => b.label === budget) || BUDGET_OPTIONS[0];
-    const durationVal = DURATION_OPTIONS.find(d => d.label === duration)?.value || "any";
-
+    const bOpt = BUDGET_OPTIONS.find(b => b.label === budget) || BUDGET_OPTIONS[0];
+    const dVal = DURATION_OPTIONS.find(d => d.label === duration)?.value || "any";
     const filtered = ALL_DESTINATIONS.filter(dest => {
-      const matchQuery    = query.trim() === "" ||
-        dest.name.toLowerCase().includes(query.toLowerCase()) ||
-        dest.country.toLowerCase().includes(query.toLowerCase());
-      const matchBudget   = dest.cost >= budgetOpt.min && dest.cost <= budgetOpt.max;
-      const matchDuration = durationVal === "any" || dest.duration === durationVal;
-      const matchInterest = interests.length === 0 ||
-        interests.some(i => dest.interests.includes(i));
-      return matchQuery && matchBudget && matchDuration && matchInterest;
+      const mQ = query.trim() === "" || dest.name.toLowerCase().includes(query.toLowerCase()) || dest.country.toLowerCase().includes(query.toLowerCase());
+      const mB = dest.cost >= bOpt.min && dest.cost <= bOpt.max;
+      const mD = dVal === "any" || dest.duration === dVal;
+      const mI = interests.length === 0 || interests.some(i => dest.interests.includes(i));
+      return mQ && mB && mD && mI;
     });
 
     setResults(filtered);
@@ -115,14 +112,8 @@ export default function DestinationFinder({ wishlist, setWishlist }) {
 
   const toggleWishlist = (dest) => {
     const key = dest.name + "|" + dest.country;
-    if (wishlistIds.has(key)) {
-      setWishlist(ws => ws.filter(w => !(w.name === dest.name && w.country === dest.country)));
-    } else {
-      setWishlist(ws => [...ws, {
-        id: dest.id, name: dest.name, country: dest.country,
-        cost: dest.cost, fav: true, img: dest.img,
-      }]);
-    }
+    if (wishlistIds.has(key)) setWishlist(ws => ws.filter(w => !(w.name === dest.name && w.country === dest.country)));
+    else setWishlist(ws => [...ws, { id: dest.id, name: dest.name, country: dest.country, cost: dest.cost, fav: true, img: dest.img }]);
   };
 
   const totalPages = results ? Math.ceil(results.length / PER_PAGE) : 0;
@@ -136,124 +127,77 @@ export default function DestinationFinder({ wishlist, setWishlist }) {
       </div>
 
       <div className="df-wrap">
-        <div className="df-filters">
-          <div className="df-search-wrap">
-            <SearchIcon />
-            <input
-              className="df-search"
-              placeholder="Search destinations"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && runSearch()}
-            />
-          </div>
-          <Dropdown
-            label="Budget"
-            value={budget}
-            onChange={setBudget}
-            options={BUDGET_OPTIONS}
-          />
-          <Dropdown
-            label="Duration"
-            value={duration}
-            onChange={setDuration}
-            options={DURATION_OPTIONS}
-          />
-          <InterestDropdown selected={interests} onChange={setInterests} />
-        </div>
-        {/* search button */}
-        <button className="df-search-btn" onClick={runSearch}>
-          <SearchIcon />
-          Search for destinations!
-        </button>
-
-        {/* results */}
-        {results === null ? (
-          <div className="df-empty-state">
-            <div className="df-empty-icon"><SearchIcon /></div>
-            <p>Set your filters and hit <strong>Search for destinations!</strong> to get started.</p>
-          </div>
-        ) : results.length === 0 ? (
-          <div className="df-empty-state">
-            <div className="df-empty-icon"><SearchIcon /></div>
-            <p>No destinations match your filters. Try adjusting your search.</p>
-          </div>
-        ) : (
-          <>
-            <div className="df-results-label">
-              Displaying <strong>{results.length}</strong> filtered destination{results.length !== 1 ? "s" : ""}:
-            </div>
-
-            <div className="df-results">
-              {paginated.map((dest, i) => {
-                const inWishlist = wishlistIds.has(dest.name + "|" + dest.country);
-                return (
-                  <div className="df-result-item" key={dest.id} style={{animationDelay:`${i*0.06}s`}}>
-                    {dest.img
-                      ? <img className="df-result-img" src={dest.img} alt={dest.name} onError={e=>{e.target.style.display="none";}}/>
-                      : <div className="df-result-img-placeholder"><ImageIcon /></div>
-                    }
-                    <div className="df-result-info">
-                      <div className="df-result-name">{dest.name}</div>
-                      <div className="df-result-country">{dest.country}</div>
-                      <div className="df-result-cost">${fmt(dest.cost)}</div>
-                    </div>
-                    <div className="df-result-right">
-                      <div className="df-tags">
-                        {dest.interests.slice(0, 2).map(tag => (
-                          <span key={tag} className="df-tag">{tag}</span>
-                        ))}
-                        {dest.interests.length > 2 && (
-                          <span className="df-tag df-tag-more">+{dest.interests.length - 2}</span>
-                        )}
-                      </div>
-                      <button
-                        className={`df-heart${inWishlist ? " saved" : ""}`}
-                        onClick={() => toggleWishlist(dest)}
-                        title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-                      >
-                        <HeartIcon filled={inWishlist} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-          </>
-        )}
-        
-            {/* pagination controls */}
-            {totalPages > 1 && (
-              <div className="df-pagination">
-                <button
-                  className="df-page-btn df-page-nav"
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                >
-                  ← Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                  <button
-                    key={p}
-                    className={`df-page-btn${page === p ? " active" : ""}`}
-                    onClick={() => setPage(p)}
-                  >
-                    {p}
-                  </button>
-                ))}
-
-                <button
-                  className="df-page-btn df-page-nav"
-                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                  disabled={page === totalPages}
-                >
-                  Next →
-                </button>
+              <div className="df-filters">
+                <div className="df-search-wrap">
+                  <SearchIcon />
+                  <input className="df-search" placeholder="Search destinations" value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => e.key === "Enter" && runSearch()} />
+                </div>
+                <Dropdown label="Budget" value={budget} onChange={setBudget} options={BUDGET_OPTIONS} />
+                <Dropdown label="Duration" value={duration} onChange={setDuration} options={DURATION_OPTIONS} />
+                <InterestDropdown selected={interests} onChange={setInterests} />
               </div>
-            )}
-      </div>
+              <button className="df-search-btn" onClick={runSearch}><SearchIcon />Search for destinations!</button>
+      
+              {results === null ? (
+                <div className="df-empty-state">
+                  <div className="df-empty-icon"><SearchIcon /></div>
+                  <p>Set your filters and hit <strong>Search for destinations!</strong> to get started.</p>
+                </div>
+              ) : results.length === 0 ? (
+                <div className="df-empty-state">
+                  <div className="df-empty-icon"><SearchIcon /></div>
+                  <p>No destinations match your filters. Try adjusting your search.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="df-results-label">Displaying <strong>{results.length}</strong> filtered destination{results.length !== 1 ? "s" : ""}:</div>
+                  <div className="df-results">
+                    {paginated.map((dest, i) => {
+                      const inWishlist = wishlistIds.has(dest.name + "|" + dest.country);
+                      return (
+                        <div className="df-result-item" key={dest.id} style={{ animationDelay: `${i * 0.06}s` }}>
+                          {dest.img
+                            ? <div className="df-result-img" style={{ backgroundImage: `url(${dest.img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                            : <div className="df-result-img-placeholder"><ImageIcon /></div>
+                          }
+                          <div className="df-result-info">
+                            <div className="df-result-name">{dest.name}</div>
+                            <div className="df-result-country">{dest.country}</div>
+                            <div className="df-result-cost">${fmt(dest.cost)}</div>
+                          </div>
+                          <div className="df-result-right">
+                            <div className="df-tags">
+                              {dest.interests.slice(0, 2).map(tag => <span key={tag} className="df-tag">{tag}</span>)}
+                              {dest.interests.length > 2 && (
+                                <div className="df-tag-popover-wrap">
+                                  <span className="df-tag df-tag-more" onClick={e => { e.stopPropagation(); setOpenTagsId(openTagsId === dest.id ? null : dest.id); }}>
+                                    +{dest.interests.length - 2}
+                                  </span>
+                                  {openTagsId === dest.id && <TagPopover tags={dest.interests} onClose={() => setOpenTagsId(null)} />}
+                                </div>
+                              )}
+                            </div>
+                            <button className={`df-heart${inWishlist ? " saved" : ""}`} onClick={() => toggleWishlist(dest)} title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}>
+                              <HeartIcon filled={inWishlist} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {/* pagination controls */}
+                  {totalPages > 1 && (
+                    <div className="df-pagination">
+                      <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>← Previous</button>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                        <button key={p} className={`df-page-btn${page === p ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
+                      ))}
+                      <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Next →</button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
     </div>
   );
 }
