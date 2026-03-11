@@ -106,7 +106,50 @@ function InterestDropdown({ selected, onChange }) {
 
 /* main page */
 export default function DestinationFinder({ wishlist, setWishlist }) {
-  
+  const [query,        setQuery]        = useState("");
+  const [budget,       setBudget]       = useState("Any Budget");
+  const [duration,     setDuration]     = useState("Any Duration");
+  const [interests,    setInterests]    = useState([]);
+  const [results,      setResults]      = useState(null); 
+  const [page,         setPage]         = useState(1);
+
+  const wishlistIds = new Set(wishlist.map(w => w.name + "|" + w.country));
+
+  const runSearch = () => {
+    const budgetOpt   = BUDGET_OPTIONS.find(b => b.label === budget) || BUDGET_OPTIONS[0];
+    const durationVal = DURATION_OPTIONS.find(d => d.label === duration)?.value || "any";
+
+    const filtered = ALL_DESTINATIONS.filter(dest => {
+      const matchQuery    = query.trim() === "" ||
+        dest.name.toLowerCase().includes(query.toLowerCase()) ||
+        dest.country.toLowerCase().includes(query.toLowerCase());
+      const matchBudget   = dest.cost >= budgetOpt.min && dest.cost <= budgetOpt.max;
+      const matchDuration = durationVal === "any" || dest.duration === durationVal;
+      const matchInterest = interests.length === 0 ||
+        interests.some(i => dest.interests.includes(i));
+      return matchQuery && matchBudget && matchDuration && matchInterest;
+    });
+
+    setResults(filtered);
+    setPage(1);
+  };
+
+  const toggleWishlist = (dest) => {
+    const key = dest.name + "|" + dest.country;
+    if (wishlistIds.has(key)) {
+      setWishlist(ws => ws.filter(w => !(w.name === dest.name && w.country === dest.country)));
+    } else {
+      setWishlist(ws => [...ws, {
+        id: dest.id, name: dest.name, country: dest.country,
+        cost: dest.cost, fav: true, img: dest.img,
+      }]);
+    }
+  };
+
+  const totalPages = results ? Math.ceil(results.length / PER_PAGE) : 0;
+  const paginated  = results ? results.slice((page - 1) * PER_PAGE, page * PER_PAGE) : [];
+  const fmt = n => Number(n).toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
+
   return (
     <div className="page">
       <div className="greeting">
@@ -140,6 +183,7 @@ export default function DestinationFinder({ wishlist, setWishlist }) {
           <InterestDropdown selected={interests} onChange={setInterests} />
         </div>
 
+        
       </div>
     </div>
   );
