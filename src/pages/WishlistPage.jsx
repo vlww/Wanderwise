@@ -132,7 +132,39 @@ function LabelDropdown({ value, onChange }) {
 
 /* main page */
 export default function WishlistPage({ wishlist, setWishlist }) {
-  
+  const [meta, setMeta] = useState(() =>
+    Object.fromEntries(wishlist.map(w => [w.id, { note: "", label: "Favorite" }]))
+  );
+  const [editingNote, setEditingNote] = useState(null);
+  const [draftNote,   setDraftNote]   = useState("");
+
+  const [budget,    setBudget]    = useState("Any Budget");
+  const [duration,  setDuration]  = useState("Any Duration");
+  const [interests, setInterests] = useState([]);
+  const [activeFilters, setActiveFilters] = useState(null); 
+
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setMeta(prev => {
+      const next = { ...prev };
+      wishlist.forEach(w => { if (!next[w.id]) next[w.id] = { note: "", label: "Favorite" }; });
+      return next;
+    });
+  }, [wishlist]);
+
+  const setLabel = (id, label) =>
+    setMeta(prev => ({ ...prev, [id]: { ...prev[id], label } }));
+
+  const saveNote = (id) => {
+    setMeta(prev => ({ ...prev, [id]: { ...prev[id], note: draftNote } }));
+    setEditingNote(null);
+  };
+
+  const removeFromWishlist = (id) => {
+    setWishlist(ws => ws.filter(w => w.id !== id));
+    setMeta(prev => { const n = { ...prev }; delete n[id]; return n; });
+  };
 
   return (
     <div className="page">
