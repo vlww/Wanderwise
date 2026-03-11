@@ -17,13 +17,11 @@ const LABEL_COLORS = {
 function Dropdown({ label, value, onChange, options }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-
   useEffect(() => {
     const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
     document.addEventListener("mousedown", h);
     return () => document.removeEventListener("mousedown", h);
   }, []);
-
   return (
     <div className="df-dropdown" ref={ref}>
       <button className={`df-dropdown-btn${open ? " open" : ""}${value && value !== label ? " has-value" : ""}`} onClick={() => setOpen(o => !o)}>
@@ -82,6 +80,49 @@ function InterestDropdown({ selected, onChange }) {
           ))}
           {selected.length > 0 && (
             <button className="df-dropdown-clear" onClick={() => onChange([])}>Clear all</button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LabelDropdown({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, []);
+  const colors = value ? LABEL_COLORS[value] : null;
+  return (
+    <div className="wl-label-wrap" ref={ref}>
+      <button
+        className={`wl-label-btn${open ? " open" : ""}`}
+        style={colors ? { background: colors.bg, borderColor: colors.border, color: colors.text } : {}}
+        onClick={() => setOpen(o => !o)}
+      >
+        <span>{value || "Add label"}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{width:13,height:13,flexShrink:0}}>
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="wl-label-menu">
+          {LABEL_OPTIONS.map(opt => {
+            const c = LABEL_COLORS[opt];
+            return (
+              <button key={opt}
+                className={`wl-label-item${value === opt ? " active" : ""}`}
+                style={{ color: c.text }}
+                onClick={() => { onChange(opt); setOpen(false); }}>
+                {opt}
+              </button>
+            );
+          })}
+          {value && (
+            <button className="df-dropdown-clear" onClick={() => { onChange(null); setOpen(false); }}>Remove label</button>
           )}
         </div>
       )}
