@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GlobeIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon, AlertIcon } from "../components/Icons";
-import { DEMO_EMAIL, DEMO_PASSWORD } from "../data/initialData";
+import { DEMO_EMAIL, DEMO_PASSWORD } from "../data/Data";
 import "../styles/login.css";
 
 export default function LoginPage({ onLogin }) {
