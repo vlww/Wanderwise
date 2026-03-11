@@ -166,6 +166,39 @@ export default function WishlistPage({ wishlist, setWishlist }) {
     setMeta(prev => { const n = { ...prev }; delete n[id]; return n; });
   };
 
+  const applyFilters = () => {
+    setActiveFilters({ budget, duration, interests: [...interests] });
+    setPage(1);
+  };
+
+  const clearFilters = () => {
+    setBudget("Any Budget");
+    setDuration("Any Duration");
+    setInterests([]);
+    setActiveFilters(null);
+    setPage(1);
+  };
+
+  const enriched = wishlist.map(w => {
+    const full = ALL_DESTINATIONS.find(d => d.name === w.name && d.country === w.country);
+    return { ...w, interests: full?.interests || [], duration: full?.duration || "week" };
+  });
+
+  const filtered = activeFilters ? enriched.filter(dest => {
+    const bOpt = BUDGET_OPTIONS.find(b => b.label === activeFilters.budget) || BUDGET_OPTIONS[0];
+    const dVal = DURATION_OPTIONS.find(d => d.label === activeFilters.duration)?.value || "any";
+    const mB = dest.cost >= bOpt.min && dest.cost <= bOpt.max;
+    const mD = dVal === "any" || dest.duration === dVal;
+    const mI = activeFilters.interests.length === 0 || activeFilters.interests.some(i => dest.interests.includes(i));
+    return mB && mD && mI;
+  }) : enriched;
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const safePage   = Math.min(page, totalPages);
+  const paginated  = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
+
+  const fmt = n => Number(n).toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
+
   return (
     <div className="page">
       <div className="greeting">
