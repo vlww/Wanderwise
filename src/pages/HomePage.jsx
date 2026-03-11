@@ -3,28 +3,30 @@ import { WalletIcon, ListIcon, HeartIcon, ImageIcon } from "../components/Icons"
 import "../styles/home.css";
 
 export default function HomePage({ wishlist, setWishlist, savings, setSavings }) {
-    const [rawSavings, setRawSavings] = useState(String(savings));
+    const [rawSavings, setRawSavings] = [String(savings), val => {
+    setSavings(val);
+  }];
 
-    const goal = Math.max(...wishlist.map((w) => w.cost), 1);
-    const pct  = Math.min((savings / goal) * 100, 100);
-    const affordable    = wishlist.filter((w) => w.cost <= savings).length;
-    const notAffordable = wishlist.filter((w) => w.cost >  savings).length;
+  const [rawVal, setRawVal] = [String(savings), null];
 
-    const handleSavings = (val) => {
-        setRawSavings(val);
-        const n = parseFloat(val.replace(/[^0-9.]/g, ""));
-        if (!isNaN(n)) setSavings(n);
-    };
+  const pct = Math.min((savings / Math.max(goal, 1)) * 100, 100);
+  const affordable = wishlist.filter(w => w.cost <= savings).length;
+  const notAffordable = wishlist.filter(w => w.cost > savings).length;
 
-    const toggleFav = (id) =>
-        setWishlist((ws) => ws.map((w) => (w.id === id ? { ...w, fav: !w.fav } : w)));
+  const handleSavings = val => {
+    const n = parseFloat(val.replace(/[^0-9.]/g, ""));
+    if (!isNaN(n)) setSavings(n);
+  };
 
-    const fmt = (n) =>
-    Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const toggleFav = id => setWishlist(ws => ws.map(w => w.id === id ? { ...w, fav: !w.fav } : w));
+  const fmt = n => Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     return (
         <div className="page">
-        <div className="home-grid">
+          <div className="greeting">
+            <h1 className="greeting-logo">Wanderwise</h1>
+          </div>
+          <div className="home-grid">
 
 
         {/* budget summary */}
@@ -38,25 +40,18 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings })
               <span className="savings-input-label">My Savings</span>
               <input
                 className="savings-input"
-                value={rawSavings}
-                onChange={(e) => handleSavings(e.target.value)}
-                placeholder="1000"
+                defaultValue={savings}
+                onChange={e => handleSavings(e.target.value)}
+                placeholder="1200"
               />
             </div>
 
-            <div className="budget-total">
-              Total Savings: <span>${fmt(savings)}</span>
-            </div>
-
+            <div className="budget-total">Total Savings: <span>${fmt(savings)}</span></div>
             <div className="progress-track">
               <div className="progress-fill" style={{ width: `${pct}%` }} />
             </div>
-            <div className="progress-label">
-              ${Number(savings).toLocaleString()} of ${goal.toLocaleString()} goal saved
-            </div>
-
+            <div className="progress-label">${Number(savings).toLocaleString()} of ${goal.toLocaleString()} goal saved</div>
             <div className="budget-divider" />
-
             <div className="afford-grid">
               <div className="afford-col">
                 <div className="afford-label">Affordable<br />Destinations</div>
@@ -85,20 +80,14 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings })
               </div>
             ) : (
               <div className="wishlist-list">
-                {wishlist.map((w) => {
+                {wishlist.map(w => {
                   const canAfford = w.cost <= savings;
                   return (
                     <div className="wish-item" key={w.id}>
-                      {w.img ? (
-                        <img
-                          className="wish-img"
-                          src={w.img}
-                          alt={w.name}
-                          onError={(e) => { e.target.style.display = "none"; }}
-                        />
-                      ) : (
-                        <div className="wish-img-placeholder"><ImageIcon /></div>
-                      )}
+                      {w.img
+                        ? <div className="wish-img" style={{ backgroundImage: `url(${w.img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                        : <div className="wish-img-placeholder"><ImageIcon /></div>
+                      }
                       <div className="wish-info">
                         <div className="wish-name">
                           {w.name}
@@ -107,15 +96,9 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings })
                           </span>
                         </div>
                         <div className="wish-country">{w.country}</div>
-                        <div className={`wish-cost${canAfford ? " affordable" : ""}`}>
-                          ${fmt(w.cost)}
-                        </div>
+                        <div className={`wish-cost${canAfford ? " affordable" : ""}`}>${fmt(w.cost)}</div>
                       </div>
-                      <button
-                        className="wish-heart"
-                        onClick={() => toggleFav(w.id)}
-                        title={w.fav ? "Unfavorite" : "Favorite"}
-                      >
+                      <button className="wish-heart" onClick={() => toggleFav(w.id)} title={w.fav ? "Unfavorite" : "Favorite"}>
                         <HeartIcon filled={w.fav} />
                       </button>
                     </div>
