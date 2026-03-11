@@ -17,6 +17,33 @@ function Dropdown({ label, value, onChange, options }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  return (
+    <div className="df-dropdown" ref={ref}>
+      <button className={`df-dropdown-btn${open ? " open" : ""}`} onClick={() => setOpen(o => !o)}>
+        <span>{value || label}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="df-dropdown-menu">
+          {options.map((opt) => {
+            const optLabel = typeof opt === "string" ? opt : opt.label;
+            const isActive = value === optLabel;
+            return (
+              <button
+                key={optLabel}
+                className={`df-dropdown-item${isActive ? " active" : ""}`}
+                onClick={() => { onChange(optLabel); setOpen(false); }}
+              >
+                {optLabel}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 /* multi select dropdown (for interests) */
@@ -44,5 +71,35 @@ function InterestDropdown({ selected, onChange }) {
       ? selected[0]
       : `${selected.length} selected`;
 
-  
+  return (
+    <div className="df-dropdown" ref={ref}>
+      <button className={`df-dropdown-btn${open ? " open" : ""}${selected.length > 0 ? " has-value" : ""}`} onClick={() => setOpen(o => !o)}>
+        <span>{label}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="df-dropdown-menu interest-menu">
+          {INTEREST_OPTIONS.map((interest) => (
+            <button
+              key={interest}
+              className={`df-dropdown-item${selected.includes(interest) ? " active" : ""}`}
+              onClick={() => toggle(interest)}
+            >
+              {selected.includes(interest) && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{width:14,height:14,marginRight:6,flexShrink:0}}>
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              )}
+              {interest}
+            </button>
+          ))}
+          {selected.length > 0 && (
+            <button className="df-dropdown-clear" onClick={() => onChange([])}>Clear all</button>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
