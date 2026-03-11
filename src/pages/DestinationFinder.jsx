@@ -244,6 +244,36 @@ export default function DestinationFinder({ wishlist, setWishlist }) {
           </>
         )}
         
+            {/* pagination controls */}
+            {totalPages > 1 && (
+              <div className="df-pagination">
+                <button
+                  className="df-page-btn df-page-nav"
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                >
+                  ← Previous
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                  <button
+                    key={p}
+                    className={`df-page-btn${page === p ? " active" : ""}`}
+                    onClick={() => setPage(p)}
+                  >
+                    {p}
+                  </button>
+                ))}
+
+                <button
+                  className="df-page-btn df-page-nav"
+                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
       </div>
     </div>
   );
