@@ -208,6 +208,26 @@ export default function WishlistPage({ wishlist, setWishlist }) {
 
       <div className="wl-wrap">
 
+        {/* filter bar */}
+        <div className="wl-filter-bar">
+          <div className="wl-filter-left">
+            <Dropdown label="Budget"   value={budget}   onChange={setBudget}   options={BUDGET_OPTIONS}/>
+            <Dropdown label="Duration" value={duration} onChange={setDuration} options={DURATION_OPTIONS}/>
+            <InterestDropdown selected={interests} onChange={setInterests}/>
+          </div>
+          <div className="wl-filter-right">
+            {activeFilters && (
+              <button className="wl-clear-btn" onClick={clearFilters}>Clear</button>
+            )}
+            <button className="wl-filter-btn" onClick={applyFilters}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:15,height:15}}>
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+              </svg>
+              Filter
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
