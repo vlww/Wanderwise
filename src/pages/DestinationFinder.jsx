@@ -182,7 +182,67 @@ export default function DestinationFinder({ wishlist, setWishlist }) {
           />
           <InterestDropdown selected={interests} onChange={setInterests} />
         </div>
+        {/* search button */}
+        <button className="df-search-btn" onClick={runSearch}>
+          <SearchIcon />
+          Search for destinations!
+        </button>
 
+        {/* results */}
+        {results === null ? (
+          <div className="df-empty-state">
+            <div className="df-empty-icon"><SearchIcon /></div>
+            <p>Set your filters and hit <strong>Search for destinations!</strong> to get started.</p>
+          </div>
+        ) : results.length === 0 ? (
+          <div className="df-empty-state">
+            <div className="df-empty-icon"><SearchIcon /></div>
+            <p>No destinations match your filters. Try adjusting your search.</p>
+          </div>
+        ) : (
+          <>
+            <div className="df-results-label">
+              Displaying <strong>{results.length}</strong> filtered destination{results.length !== 1 ? "s" : ""}:
+            </div>
+
+            <div className="df-results">
+              {paginated.map((dest, i) => {
+                const inWishlist = wishlistIds.has(dest.name + "|" + dest.country);
+                return (
+                  <div className="df-result-item" key={dest.id} style={{animationDelay:`${i*0.06}s`}}>
+                    {dest.img
+                      ? <img className="df-result-img" src={dest.img} alt={dest.name} onError={e=>{e.target.style.display="none";}}/>
+                      : <div className="df-result-img-placeholder"><ImageIcon /></div>
+                    }
+                    <div className="df-result-info">
+                      <div className="df-result-name">{dest.name}</div>
+                      <div className="df-result-country">{dest.country}</div>
+                      <div className="df-result-cost">${fmt(dest.cost)}</div>
+                    </div>
+                    <div className="df-result-right">
+                      <div className="df-tags">
+                        {dest.interests.slice(0, 2).map(tag => (
+                          <span key={tag} className="df-tag">{tag}</span>
+                        ))}
+                        {dest.interests.length > 2 && (
+                          <span className="df-tag df-tag-more">+{dest.interests.length - 2}</span>
+                        )}
+                      </div>
+                      <button
+                        className={`df-heart${inWishlist ? " saved" : ""}`}
+                        onClick={() => toggleWishlist(dest)}
+                        title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+                      >
+                        <HeartIcon filled={inWishlist} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+          </>
+        )}
         
       </div>
     </div>
