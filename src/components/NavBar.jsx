@@ -1,37 +1,36 @@
-import { GlobeIcon, GearIcon } from "./Icons";
+import { HomeIcon, GearIcon } from "./Icons";
 import "../styles/navbar.css";
 
-const TABS = ["Home", "Destination Finder", "Wishlist", "Budget Tracker"];
+const TABS = ["Destination Finder", "Wishlist", "Budget Tracker"];
 
 export default function NavBar({ active, setActive }) {
   return (
     <nav className="nav">
-      <div className="nav-logo">
-        <div className="nav-logo-icon">
-          <GlobeIcon />
-        </div>
-        Wanderwise
-      </div>
-
-      <div className="nav-tabs">
-        {TABS.map((t) => (
-          <button
-            key={t}
-            className={`nav-tab${active === t ? " active" : ""}`}
-            onClick={() => setActive(t)}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-
       <button
-        className="nav-settings"
-        title="Settings"
-        onClick={() => setActive("Settings")}
-      >
-        <GearIcon />
-      </button>
+              className={`nav-home-btn${active === "Home" ? " active" : ""}`}
+              title="Home"
+              onClick={() => setActive("Home")}
+            >
+              <HomeIcon />
+            </button>
+            <div className="nav-tabs">
+              {TABS.map(t => (
+                <button
+                  key={t}
+                  className={`nav-tab${active === t ? " active" : ""}`}
+                  onClick={() => setActive(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+            <button
+              className="nav-settings"
+              title="Settings"
+              onClick={() => setActive("Settings")}
+            >
+              <GearIcon />
+            </button>
     </nav>
   );
 }
