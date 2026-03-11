@@ -54,10 +54,7 @@ export const DURATION_OPTIONS = [
   { label:"1 Month (15+ days)",   value:"month" },
 ];
 
-export const INTEREST_OPTIONS = [
-  "Adventure","Beach","City","Culture",
-  "Food","History","Music","Nature",
-  "Nightlife","Outdoors",
-];
+export const INTEREST_OPTIONS = ["Adventure","Beach","City","Culture","Food","History","Music","Nature","Nightlife","Outdoors"];
 
 export const PER_PAGE = 5;
+export const BT_PER_PAGE = 5;
