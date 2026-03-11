@@ -200,6 +200,7 @@ export default function WishlistPage({ wishlist, setWishlist }) {
   const fmt = n => Number(n).toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
 
   return (
+
     <div className="page">
       <div className="greeting">
         <h1 className="greeting-logo">Wishlist</h1>
@@ -207,6 +208,10 @@ export default function WishlistPage({ wishlist, setWishlist }) {
       </div>
 
       <div className="wl-wrap">
+
+
+
+
 
         {/* filter bar */}
         <div className="wl-filter-bar">
@@ -228,6 +233,99 @@ export default function WishlistPage({ wishlist, setWishlist }) {
           </div>
         </div>
 
+        {activeFilters && (
+          <div className="wl-filter-notice">
+            Showing <strong>{filtered.length}</strong> of <strong>{wishlist.length}</strong> destinations — filters active
+          </div>
+        )}
+
+        {/* table */}
+        {wishlist.length === 0 ? (
+          <div className="df-empty-state">
+            <div className="df-empty-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:24,height:24}}>
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <p>Your wishlist is empty. Use the <strong>Destination Finder</strong> to add destinations!</p>
+          </div>
+        ) : (
+          <>
+            <div className="wl-table">
+              {/* header */}
+              <div className="wl-header">
+                <div className="wl-col-dest">Destination</div>
+                <div className="wl-col-notes">Notes</div>
+                <div className="wl-col-labels">Labels</div>
+              </div>
+
+              {/* rows */}
+              {paginated.length === 0 ? (
+                <div className="wl-no-results">No destinations match the active filters.</div>
+              ) : (
+                paginated.map((dest, i) => {
+                  const m = meta[dest.id] || { note: "", label: "Favorite" };
+                  const isEditing = editingNote === dest.id;
+                  return (
+                    <div className="wl-row" key={dest.id} style={{animationDelay:`${i*0.06}s`}}>
+
+                      <div className="wl-col-dest">
+                        <div className="wl-dest-inner">
+                          {dest.img
+                            ? <img className="wl-img" src={dest.img} alt={dest.name} onError={e=>{e.target.style.display="none";}}/>
+                            : <div className="wl-img-placeholder"><ImageIcon/></div>
+                          }
+                          <div className="wl-dest-info">
+                            <div className="wl-dest-name">{dest.name}</div>
+                            <div className="wl-dest-country">{dest.country}</div>
+                            <div className="wl-dest-cost">${fmt(dest.cost)}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* notes */}
+                      <div className="wl-col-notes">
+                        {isEditing ? (
+                          <textarea
+                            className="wl-note-input"
+                            value={draftNote}
+                            onChange={e => setDraftNote(e.target.value)}
+                            onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveNote(dest.id); }}}
+                            onBlur={() => saveNote(dest.id)}
+                            autoFocus
+                            placeholder="Add a note… (Enter to save)"
+                          />
+                        ) : (
+                          <div
+                            className={`wl-note-display${!m.note ? " empty" : ""}`}
+                            onClick={() => { setEditingNote(dest.id); setDraftNote(m.note); }}
+                            title="Click to edit"
+                          >
+                            {m.note || "Click to add a note…"}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* labels */}
+                      <div className="wl-col-labels">
+                        <LabelDropdown value={m.label} onChange={val => setLabel(dest.id, val)}/>
+                        <button
+                          className="wl-remove-btn"
+                          onClick={() => removeFromWishlist(dest.id)}
+                          title="Remove from wishlist"
+                        >
+                          <HeartIcon filled={true}/>
+                        </button>
+                      </div>
+
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+          </>
+        )}
       </div>
     </div>
   );
