@@ -19,24 +19,25 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [tab,      setTab]      = useState("Home");
   const [wishlist, setWishlist] = useState(INITIAL_WISHLIST);
-  const [savings,  setSavings]  = useState(INITIAL_SAVINGS);
+  const [savings,  setSavings]  = useState(1200);
+  const [goal, setGoal] = useState(1800);
+  const [meta, setMeta] = useState(() =>
+    Object.fromEntries(INITIAL_WISHLIST.map(w => [w.id, { note: "", label: "Favorite" }]))
+  );
+  const [colorTheme, setColorTheme] = useState("Blue");
+  const [emailNotifications, setEmailNotifications] = useState(false);
+
+  const handleLogout = () => { setLoggedIn(false); setTab("Home"); };
+  const themeVars = THEMES[colorTheme] || THEMES.Blue;
 
   const renderPage = () => {
     switch (tab) {
-      case "Home":
-        return (
-          <HomePage
-            wishlist={wishlist}
-            setWishlist={setWishlist}
-            savings={savings}
-            setSavings={setSavings}
-          />
-        );
-      case "Destination Finder": return <DestinationFinder />;
-      case "Wishlist":           return <WishlistPage />;
-      case "Budget Tracker":     return <BudgetTracker />;
-      case "Settings":           return <SettingsPage />;
-      default:                   return null;
+      case "Home":               return <HomePage wishlist={wishlist} setWishlist={setWishlist} savings={savings} setSavings={setSavings} goal={goal} />;
+      case "Destination Finder": return <DestinationFinder wishlist={wishlist} setWishlist={setWishlist} />;
+      case "Wishlist":           return <WishlistPage wishlist={wishlist} setWishlist={setWishlist} meta={meta} setMeta={setMeta} />;
+      case "Budget Tracker":     return <BudgetTrackerPage wishlist={wishlist} savings={savings} setSavings={setSavings} goal={goal} setGoal={setGoal} />;
+      case "Settings":           return <SettingsPage onLogout={handleLogout} colorTheme={colorTheme} setColorTheme={setColorTheme} emailNotifications={emailNotifications} setEmailNotifications={setEmailNotifications} />;
+      default: return null;
     }
   };
 
