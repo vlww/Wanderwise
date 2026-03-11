@@ -103,3 +103,44 @@ function InterestDropdown({ selected, onChange }) {
     </div>
   );
 }
+
+/* main page */
+export default function DestinationFinder({ wishlist, setWishlist }) {
+  
+  return (
+    <div className="page">
+      <div className="greeting">
+        <h1 className="greeting-logo">Destination Finder</h1>
+      </div>
+
+      <div className="df-wrap">
+        <div className="df-filters">
+          <div className="df-search-wrap">
+            <SearchIcon />
+            <input
+              className="df-search"
+              placeholder="Search destinations"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && runSearch()}
+            />
+          </div>
+          <Dropdown
+            label="Budget"
+            value={budget}
+            onChange={setBudget}
+            options={BUDGET_OPTIONS}
+          />
+          <Dropdown
+            label="Duration"
+            value={duration}
+            onChange={setDuration}
+            options={DURATION_OPTIONS}
+          />
+          <InterestDropdown selected={interests} onChange={setInterests} />
+        </div>
+
+      </div>
+    </div>
+  );
+}
