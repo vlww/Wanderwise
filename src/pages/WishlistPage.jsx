@@ -159,25 +159,20 @@ export default function WishlistPage({ wishlist, setWishlist }) {
     <div className="page">
       <div className="greeting">
         <h1 className="greeting-logo">Wishlist</h1>
-        <p>Organise and plan your saved destinations.</p>
       </div>
 
       <div className="wl-wrap">
         {/* filter bar */}
         <div className="wl-filter-bar">
           <div className="wl-filter-left">
-            <Dropdown label="Budget"   value={budget}   onChange={setBudget}   options={BUDGET_OPTIONS}/>
-            <Dropdown label="Duration" value={duration} onChange={setDuration} options={DURATION_OPTIONS}/>
-            <InterestDropdown selected={interests} onChange={setInterests}/>
+            <Dropdown label="Budget" value={budget} onChange={setBudget} options={BUDGET_OPTIONS} />
+            <Dropdown label="Duration" value={duration} onChange={setDuration} options={DURATION_OPTIONS} />
+            <InterestDropdown selected={interests} onChange={setInterests} />
           </div>
           <div className="wl-filter-right">
-            {activeFilters && (
-              <button className="wl-clear-btn" onClick={clearFilters}>Clear</button>
-            )}
+            {activeFilters && <button className="wl-clear-btn" onClick={clearFilters}>Clear</button>}
             <button className="wl-filter-btn" onClick={applyFilters}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:15,height:15}}>
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-              </svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 15, height: 15 }}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
               Filter
             </button>
           </div>
@@ -188,12 +183,11 @@ export default function WishlistPage({ wishlist, setWishlist }) {
             Showing <strong>{filtered.length}</strong> of <strong>{wishlist.length}</strong> destinations — filters active
           </div>
         )}
-
-        {/* table */}
+      { /* table */}
         {wishlist.length === 0 ? (
           <div className="df-empty-state">
             <div className="df-empty-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:24,height:24}}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 24, height: 24 }}>
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
               </svg>
             </div>
@@ -202,14 +196,11 @@ export default function WishlistPage({ wishlist, setWishlist }) {
         ) : (
           <>
             <div className="wl-table">
-              {/* header */}
               <div className="wl-header">
                 <div className="wl-col-dest">Destination</div>
                 <div className="wl-col-notes">Notes</div>
                 <div className="wl-col-labels">Labels</div>
               </div>
-
-              {/* rows */}
               {paginated.length === 0 ? (
                 <div className="wl-no-results">No destinations match the active filters.</div>
               ) : (
@@ -217,13 +208,12 @@ export default function WishlistPage({ wishlist, setWishlist }) {
                   const m = meta[dest.id] || { note: "", label: "Favorite" };
                   const isEditing = editingNote === dest.id;
                   return (
-                    <div className="wl-row" key={dest.id} style={{animationDelay:`${i*0.06}s`}}>
-
+                    <div className="wl-row" key={dest.id} style={{ animationDelay: `${i * 0.06}s`, zIndex: openDropdownId === dest.id ? 50 : 1 }}>
                       <div className="wl-col-dest">
                         <div className="wl-dest-inner">
                           {dest.img
-                            ? <img className="wl-img" src={dest.img} alt={dest.name} onError={e=>{e.target.style.display="none";}}/>
-                            : <div className="wl-img-placeholder"><ImageIcon/></div>
+                            ? <div className="wl-img" style={{ backgroundImage: `url(${dest.img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                            : <div className="wl-img-placeholder"><ImageIcon /></div>
                           }
                           <div className="wl-dest-info">
                             <div className="wl-dest-name">{dest.name}</div>
@@ -232,48 +222,39 @@ export default function WishlistPage({ wishlist, setWishlist }) {
                           </div>
                         </div>
                       </div>
-
-                      {/* notes */}
                       <div className="wl-col-notes">
                         {isEditing ? (
-                          <textarea
-                            className="wl-note-input"
-                            value={draftNote}
-                            onChange={e => setDraftNote(e.target.value)}
-                            onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveNote(dest.id); }}}
-                            onBlur={() => saveNote(dest.id)}
-                            autoFocus
-                            placeholder="Add a note… (Enter to save)"
-                          />
+                          <textarea className="wl-note-input" value={draftNote} onChange={e => setDraftNote(e.target.value)}
+                            onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveNote(dest.id); } }}
+                            onBlur={() => saveNote(dest.id)} autoFocus placeholder="Add a note… (Enter to save)" />
                         ) : (
-                          <div
-                            className={`wl-note-display${!m.note ? " empty" : ""}`}
-                            onClick={() => { setEditingNote(dest.id); setDraftNote(m.note); }}
-                            title="Click to edit"
-                          >
+                          <div className={`wl-note-display${!m.note ? " empty" : ""}`}
+                            onClick={() => { setEditingNote(dest.id); setDraftNote(m.note); }} title="Click to edit">
                             {m.note || "Click to add a note…"}
                           </div>
                         )}
                       </div>
-
-                      {/* labels */}
                       <div className="wl-col-labels">
-                        <LabelDropdown value={m.label} onChange={val => setLabel(dest.id, val)}/>
-                        <button
-                          className="wl-remove-btn"
-                          onClick={() => removeFromWishlist(dest.id)}
-                          title="Remove from wishlist"
-                        >
-                          <HeartIcon filled={true}/>
+                        <LabelDropdown value={m.label} onChange={val => setLabel(dest.id, val)} onOpenChange={isOpen => setOpenDropdownId(isOpen ? dest.id : null)} />
+                        <button className="wl-remove-btn" onClick={() => removeFromWishlist(dest.id)} title="Remove from wishlist">
+                          <HeartIcon filled={true} />
                         </button>
                       </div>
-
                     </div>
                   );
                 })
               )}
             </div>
-
+            {totalPages > 1 && (
+              /* pagination */
+              <div className="df-pagination">
+                <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage === 1}>← Previous</button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                  <button key={p} className={`df-page-btn${safePage === p ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
+                ))}
+                <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}>Next →</button>
+              </div>
+            )}
           </>
         )}
       </div>
