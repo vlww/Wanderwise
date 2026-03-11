@@ -13,7 +13,7 @@ const LABEL_COLORS = {
   "Too Expensive": { bg:"rgba(44,95,138,.10)", border:"#4A8BB5", text:"#2C5F8A" },
 };
 
-/* dropdown (reudesed from destination finder) */
+/* dropdowns (reused from destinationfinder) */
 function Dropdown({ label, value, onChange, options }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -23,7 +23,6 @@ function Dropdown({ label, value, onChange, options }) {
     document.addEventListener("mousedown", h);
     return () => document.removeEventListener("mousedown", h);
   }, []);
-
 
   return (
     <div className="df-dropdown" ref={ref}>
@@ -50,3 +49,42 @@ function Dropdown({ label, value, onChange, options }) {
   );
 }
 
+function InterestDropdown({ selected, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, []);
+  const toggle = i => onChange(selected.includes(i) ? selected.filter(x => x !== i) : [...selected, i]);
+  const label = selected.length === 0 ? "Interests" : selected.length === 1 ? selected[0] : `${selected.length} selected`;
+  return (
+    <div className="df-dropdown" ref={ref}>
+      <button className={`df-dropdown-btn${open ? " open" : ""}${selected.length > 0 ? " has-value" : ""}`} onClick={() => setOpen(o => !o)}>
+        <span>{label}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="df-dropdown-menu interest-menu">
+          {INTEREST_OPTIONS.map(i => (
+            <button key={i} className={`df-dropdown-item${selected.includes(i) ? " active" : ""}`} onClick={() => toggle(i)}>
+              {selected.includes(i) && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  style={{width:14,height:14,marginRight:6,flexShrink:0}}>
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              )}
+              {i}
+            </button>
+          ))}
+          {selected.length > 0 && (
+            <button className="df-dropdown-clear" onClick={() => onChange([])}>Clear all</button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
