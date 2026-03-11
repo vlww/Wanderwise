@@ -2,7 +2,7 @@
   max-width: 1000px; margin: 0 auto; padding: 0 24px;
 }
 
-/* filter bar.     */
+/* filter bar   */
 .wl-filter-bar {
   display: flex; align-items: center; justify-content: space-between;
   gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
@@ -39,3 +39,58 @@
   border-radius: 8px; border: 1px solid rgba(44,95,138,.12);
 }
 .wl-filter-notice strong { color: var(--ocean); }
+
+
+/* table */
+.wl-table {
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(44,95,138,.05), 0 12px 40px rgba(44,95,138,.09);
+  overflow: hidden;
+}
+
+.wl-header {
+  display: grid;
+  grid-template-columns: 2fr 2.2fr 1.4fr;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--ocean), var(--ocean-mid));
+  gap: 16px;
+}
+.wl-header > div {
+  font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.9);
+  text-transform: uppercase; letter-spacing: .06em;
+}
+
+.wl-row {
+  display: grid;
+  grid-template-columns: 2fr 2.2fr 1.4fr;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-light);
+  transition: background .15s;
+  animation: fadeUp .35s both;
+  align-items: center;
+}
+.wl-row:last-child { border-bottom: none; }
+.wl-row:hover { background: rgba(235,243,250,.5); }
+
+/* destination */
+.wl-col-dest { display: flex; align-items: center; }
+.wl-dest-inner { display: flex; align-items: center; gap: 12px; }
+.wl-img {
+  width: 80px; height: 60px; object-fit: cover;
+  border-radius: 10px; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.wl-img-placeholder {
+  width: 80px; height: 60px; flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--ocean-pale), var(--sand));
+  display: flex; align-items: center; justify-content: center;
+}
+.wl-img-placeholder svg { width:20px; height:20px; stroke:var(--ocean-light); fill:none; stroke-width:1.5; }
+.wl-dest-name  { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--text-dark); }
+.wl-dest-country { font-size:.74rem; color:var(--text-light); margin-top:2px; }
+.wl-dest-cost  { font-size:.84rem; font-weight:600; color:var(--text-mid); margin-top:4px; }
