@@ -12,17 +12,16 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings, g
     if (!isNaN(n)) setSavings(n);
   };
 
-  const toggleFav = id => setWishlist(ws => ws.map(w => w.id === id ? { ...w, fav: !w.fav } : w));
+  const toggleFav = id => setWishlist(ws => ws.filter(w => w.id !== id));
   const fmt = n => Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <div className="page">
       <div className="greeting">
         <h1 className="greeting-logo">Wanderwise</h1>
-        <p>Here's an overview of your travel plans and budget.</p>
       </div>
       <div className="home-grid">
-        {/* Budget Summary */}
+        {/* budget summary */}
         <div className="card">
           <div className="card-header"><WalletIcon /><h2>Budget Summary</h2></div>
           <div className="card-body">
@@ -54,7 +53,7 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings, g
           </div>
         </div>
 
-        {/* Wishlist Preview */}
+        {/* wishlist preview */}
         <div className="card">
           <div className="card-header"><ListIcon /><h2>Wishlist</h2></div>
           <div className="card-body" style={{ padding: "8px 14px" }}>

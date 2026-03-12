@@ -11,24 +11,28 @@ export default function LoginPage({ onLogin }) {
   const [loading,  setLoading]  = useState(false);
 
     const handle = async () => {
-        setError("");
-        if (!email || !password) {
-          setError("Please enter your email and password.");
-          return;
-        }
-        if (!/\S+@\S+\.\S+/.test(email)) {
-          setError("Please enter a valid email address.");
-          return;
-        }
-        setLoading(true);
-        await new Promise((r) => setTimeout(r, 1100));
-        setLoading(false);
-        if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-          onLogin();
-        } else {
-          setError("Incorrect email or password.");
-        }
-      };
+    setError("");
+
+    if (!email || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
+
+    if (email.includes("@") == false) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+    await new Promise((r) => setTimeout(r, 1100));
+    setLoading(false);
+
+    if (email == DEMO_EMAIL && password == DEMO_PASSWORD) {
+      onLogin();
+    } else {
+      setError("Incorrect email or password.");
+    }
+  };
     
     return (
         <div className="login-wrap">
