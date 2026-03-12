@@ -18,3 +18,10 @@ To run the project, run the following lines, and open the localhost link in your
 npm install
 npm run dev
 ```
+
+## Demo Login
+
+Use this login to demo the app
+
+- **Email:** traveler@wanderwise.app
+- **Password:** wanderwise123
