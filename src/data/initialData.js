@@ -35,8 +35,8 @@ export const ALL_DESTINATIONS = [
   { id:118, name:"Athens",     country:"Greece",        cost:2100, duration:"week",      interests:["Beach","Culture","History","Food"],          img:"https://www.flyingandtravel.com/wp-content/uploads/2018/06/what-to-do-in-athens-greece-acropolis.jpg" },
   { id:119, name:"Reykjavík",  country:"Iceland",       cost:2500, duration:"week",      interests:["Nature","Adventure","Outdoors"],             img:"https://gti.images.tshiftcdn.com/10832877/x/0/top-11-things-to-do-in-reykjavik-in-february-1.jpg?ixlib=php-3.3.0&w=883" },
   { id:120, name:"New Orleans",country:"United States", cost:700,  duration:"weekend",   interests:["Food","Music","Culture","History","Nightlife"], img:"https://photowalkstv.com/wp-content/uploads/2025/03/royal-street-1200x675.jpg" },
-  { id:120, name:"Houston", country:"United States", cost:300,  duration:"weekend",   interests:["Culture","Food","City","Nightlife"], img:"https://www.visittheusa.com/sites/default/files/styles/hero_l/public/images/hero_media_image/2016-10/0%20HERO_HoustonTX_GettyImages-532390052.jpg?h=c5520b1b&itok=h8KIQIok" },
-  { id:120, name:"Calgary",country:"Canada", cost:1000,  duration:"week",   interests:["Nature","Adventure","Outdoors"], img:"https://cdn.britannica.com/60/137760-050-9EFAB73A/Calgary-foreground-Pengrowth-Saddledome-Canada-Alberta.jpg" },
+  { id:121, name:"Houston", country:"United States", cost:300,  duration:"weekend",   interests:["Culture","Food","City","Nightlife"], img:"https://www.visittheusa.com/sites/default/files/styles/hero_l/public/images/hero_media_image/2016-10/0%20HERO_HoustonTX_GettyImages-532390052.jpg?h=c5520b1b&itok=h8KIQIok" },
+  { id:122, name:"Calgary",country:"Canada", cost:1000,  duration:"week",   interests:["Nature","Adventure","Outdoors"], img:"https://cdn.britannica.com/60/137760-050-9EFAB73A/Calgary-foreground-Pengrowth-Saddledome-Canada-Alberta.jpg" },
 ];
 
 export const BUDGET_OPTIONS = [
