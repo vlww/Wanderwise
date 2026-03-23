@@ -63,7 +63,7 @@ export default function LoginPage({ onLogin }) {
                       placeholder="your@email.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handle()}
+                      onKeyDown={(e) => e.key == "Enter" && handle()}
                       autoComplete="email"
                     />
                   </div>
@@ -79,7 +79,7 @@ export default function LoginPage({ onLogin }) {
                       placeholder="•••••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handle()}
+                      onKeyDown={(e) => e.key == "Enter" && handle()}
                       autoComplete="current-password"
                     />
                     <button className="field-icon-r" onClick={() => setShowPass((p) => !p)}>

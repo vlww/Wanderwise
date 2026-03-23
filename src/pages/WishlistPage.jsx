@@ -28,8 +28,8 @@ function Dropdown({ label, value, onChange, options }) {
       {open && (
         <div className="df-dropdown-menu">
           {options.map(opt => {
-            const lbl = typeof opt === "string" ? opt : opt.label;
-            return <button key={lbl} className={`df-dropdown-item${value === lbl ? " active" : ""}`} onClick={() => { onChange(lbl); setOpen(false); }}>{lbl}</button>;
+            const lbl = typeof opt == "string" ? opt : opt.label;
+            return <button key={lbl} className={`df-dropdown-item${value == lbl ? " active" : ""}`} onClick={() => { onChange(lbl); setOpen(false); }}>{lbl}</button>;
           })}
         </div>
       )}
@@ -46,7 +46,7 @@ function InterestDropdown({ selected, onChange }) {
     return () => document.removeEventListener("mousedown", h);
   }, []);
   const toggle = i => onChange(selected.includes(i) ? selected.filter(x => x !== i) : [...selected, i]);
-  const label = selected.length === 0 ? "Interests" : selected.length === 1 ? selected[0] : `${selected.length} selected`;
+  const label = selected.length == 0 ? "Interests" : selected.length == 1 ? selected[0] : `${selected.length} selected`;
   return (
     <div className="df-dropdown" ref={ref}>
       <button className={`df-dropdown-btn${open ? " open" : ""}${selected.length > 0 ? " has-value" : ""}`} onClick={() => setOpen(o => !o)}>
@@ -94,7 +94,7 @@ function LabelDropdown({ value, onChange, onOpenChange }) {
           {LABEL_OPTIONS.map(opt => {
             const c = LABEL_COLORS[opt];
             return (
-              <button key={opt} className={`wl-label-item${value === opt ? " active" : ""}`} style={{ color: c.text }}
+              <button key={opt} className={`wl-label-item${value == opt ? " active" : ""}`} style={{ color: c.text }}
                 onClick={() => { onChange(opt); setOpenTracked(false); }}>
                 {opt}
               </button>
@@ -132,16 +132,16 @@ export default function WishlistPage({ wishlist, setWishlist, meta, setMeta }) {
   const clearFilters = () => { setBudget("Any Budget"); setDuration("Any Duration"); setInterests([]); setActiveFilters(null); setPage(1); };
 
   const enriched = wishlist.map(w => {
-    const full = ALL_DESTINATIONS.find(d => d.name === w.name && d.country === w.country);
+    const full = ALL_DESTINATIONS.find(d => d.name == w.name && d.country == w.country);
     return { ...w, interests: full?.interests || [], duration: full?.duration || "week" };
   });
 
   const filtered = activeFilters ? enriched.filter(dest => {
-    const bOpt = BUDGET_OPTIONS.find(b => b.label === activeFilters.budget) || BUDGET_OPTIONS[0];
-    const dVal = DURATION_OPTIONS.find(d => d.label === activeFilters.duration)?.value || "any";
+    const bOpt = BUDGET_OPTIONS.find(b => b.label == activeFilters.budget) || BUDGET_OPTIONS[0];
+    const dVal = DURATION_OPTIONS.find(d => d.label == activeFilters.duration)?.value || "any";
     return dest.cost >= bOpt.min && dest.cost <= bOpt.max &&
-      (dVal === "any" || dest.duration === dVal) &&
-      (activeFilters.interests.length === 0 || activeFilters.interests.some(i => dest.interests.includes(i)));
+      (dVal == "any" || dest.duration == dVal) &&
+      (activeFilters.interests.length == 0 || activeFilters.interests.some(i => dest.interests.includes(i)));
   }) : enriched;
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
@@ -176,7 +176,7 @@ export default function WishlistPage({ wishlist, setWishlist, meta, setMeta }) {
           </div>
         )}
 
-        {wishlist.length === 0 ? (
+        {wishlist.length == 0 ? (
           <div className="df-empty-state">
             <div className="df-empty-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 24, height: 24 }}>
@@ -193,14 +193,14 @@ export default function WishlistPage({ wishlist, setWishlist, meta, setMeta }) {
                 <div className="wl-col-notes">Notes</div>
                 <div className="wl-col-labels">Labels</div>
               </div>
-              {paginated.length === 0 ? (
+              {paginated.length == 0 ? (
                 <div className="wl-no-results">No destinations match the active filters.</div>
               ) : (
                 paginated.map((dest, i) => {
                   const m = meta[dest.id] || { note: "", label: "Favorite" };
-                  const isEditing = editingNote === dest.id;
+                  const isEditing = editingNote == dest.id;
                   return (
-                    <div className="wl-row" key={dest.id} style={{ animationDelay: `${i * 0.06}s`, zIndex: openDropdownId === dest.id ? 50 : 1 }}>
+                    <div className="wl-row" key={dest.id} style={{ animationDelay: `${i * 0.06}s`, zIndex: openDropdownId == dest.id ? 50 : 1 }}>
                       <div className="wl-col-dest">
                         <div className="wl-dest-inner">
                           {dest.img
@@ -251,11 +251,11 @@ export default function WishlistPage({ wishlist, setWishlist, meta, setMeta }) {
             </div>
             {totalPages > 1 && (
               <div className="df-pagination">
-                <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage === 1}>← Previous</button>
+                <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage == 1}>← Previous</button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                   <button key={p} className={`df-page-btn${safePage == p ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
                 ))}
-                <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}>Next →</button>
+                <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePage == totalPages}>Next →</button>
               </div>
             )}
           </>

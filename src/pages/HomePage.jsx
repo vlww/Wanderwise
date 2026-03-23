@@ -7,7 +7,7 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings, g
   if (pct > 100) {
     pct = 100;
   }
-  if (goal === 0) {
+  if (goal == 0) {
     pct = 0;
   }
 
@@ -71,7 +71,7 @@ export default function HomePage({ wishlist, setWishlist, savings, setSavings, g
         <div className="card">
           <div className="card-header"><ListIcon /><h2>Wishlist</h2></div>
           <div className="card-body" style={{ padding: "8px 14px" }}>
-            {wishlist.length === 0 ? (
+            {wishlist.length == 0 ? (
               <div className="empty-state">
                 <ImageIcon />
                 No destinations saved yet.<br />Use the Destination Finder to add some!

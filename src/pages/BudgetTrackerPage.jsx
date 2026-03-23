@@ -57,7 +57,7 @@ export default function BudgetTrackerPage({ wishlist, savings, setSavings, goal,
             <div>Total Cost</div>
             <div>Status</div>
           </div>
-          {wishlist.length === 0 ? (
+          {wishlist.length == 0 ? (
             <div className="bt-empty">
               <ImageIcon />
               <p>No destinations in your wishlist yet.<br />Add some using the Destination Finder!</p>
@@ -102,11 +102,11 @@ export default function BudgetTrackerPage({ wishlist, savings, setSavings, goal,
 
         {totalPages > 1 && (
           <div className="df-pagination">
-            <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage === 1}>← Previous</button>
+            <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage == 1}>← Previous</button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-              <button key={p} className={`df-page-btn${safePage === p ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
+              <button key={p} className={`df-page-btn${safePage == p ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
             ))}
-            <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}>Next →</button>
+            <button className="df-page-btn df-page-nav" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePage == totalPages}>Next →</button>
           </div>
         )}
       </div>
