@@ -44,7 +44,7 @@ export const ALL_DESTINATIONS = [
   { id:127, name:"Marrakech",     country:"Morocco",       cost:1000, duration:"week",     interests:["Culture","History","Food","Adventure"],    img:"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/30/9d/92/7a/caption.jpg?w=1200&h=-1&s=1&cx=1920&cy=1080&chk=v1_809ada3581f73ea031b9" },
   { id:128, name:"Seattle",       country:"United States", cost:900,  duration:"weekend",  interests:["City","Food","Nature","Culture"],          img:"https://6amcity.brightspotcdn.com/dims4/default/602afe7/2147483647/strip/false/crop/4106x2806+0+0/resize/1486x1016!/quality/90/?url=https%3A%2F%2Fk1-prod-sixam-city.s3.us-east-2.amazonaws.com%2Fbrightspot%2Fb8%2F07%2F89ac30df46e4b72963ca84dd7f94%2Fspaceneedlewhite-1.jpg" },
   { id:129, name:"Washington DC", country:"United States", cost:800,  duration:"weekend",  interests:["History","Culture","City","Food"],         img:"https://travelguidetousa.com/wp-content/uploads/2023/11/washington-dc-1.jpg" },
-  { id:130, name:"Boston",        country:"United States", cost:1000, duration:"weekend",  interests:["History","Culture","Food","City"],         img:"https://media.cnn.com/api/v1/images/stellar/prod/bostonharbor-kyleklein-0004-026c4f4f-9547-4101-a368-04636b3f6d6a.jpg?c=original" },
+  { id:130, name:"Boston",        country:"United States", cost:1000, duration:"weekend",  interests:["History","Culture","Food","City"],         img:"https://media.cnn.com/api/v1/images/stellar/prod/bostonharbor-kyleklein-0004-026c4f4f-9547-4101-a368-04636b3f6d6a.jpg?c=original"},
 ];
 
 export const BUDGET_OPTIONS = [
